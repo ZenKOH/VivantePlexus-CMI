@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f5f3ef" />
+  <meta name="description" content="VivantePlexus CMI — Cognitive-Motor Interference Intelligence research and assessment prototype." />
+  <title>VivantePlexus™ CMI</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true">VP</div>
+        <div><div class="brand-name">VivantePlexus™</div><div class="brand-sub">CMI Intelligence</div></div>
+      </div>
+      <nav class="nav-list" id="navList">
+        <button class="nav-item active" data-view="overview"><span>01</span>Overview</button>
+        <button class="nav-item" data-view="assess"><span>02</span>CMI Assess</button>
+        <button class="nav-item" data-view="capacity"><span>03</span>Capacity Map</button>
+        <button class="nav-item" data-view="longitudinal"><span>04</span>Longitudinal</button>
+        <button class="nav-item" data-view="protocols"><span>05</span>Protocols</button>
+        <button class="nav-item" data-view="evidence"><span>06</span>Evidence</button>
+        <button class="nav-item" data-view="data"><span>07</span>Data & Export</button>
+      </nav>
+      <div class="sidebar-foot"><div class="status-dot-row"><span class="status-dot"></span>Research prototype</div><p>No diagnostic or treatment claims.</p></div>
+    </aside>
+
+    <main class="main-stage">
+      <header class="topbar">
+        <div><div class="eyebrow">Cognitive-Motor Interference Intelligence</div><h1 id="pageTitle">Overview</h1></div>
+        <div class="topbar-actions"><div class="device-pill" id="devicePill"><span class="status-dot"></span>Simulator connected</div><button class="button secondary" id="resetDemoBtn">Reset demo</button></div>
+      </header>
+
+      <section id="view-overview" class="view active" aria-labelledby="pageTitle">
+        <div class="hero-grid">
+          <article class="hero-card">
+            <div class="eyebrow">Core question</div>
+            <h2>How well does movement survive cognitive load?</h2>
+            <p>VivantePlexus™ CMI measures the interaction between motor and cognitive performance using repeatable baselines, synchronised event streams and longitudinal capacity mapping.</p>
+            <div class="hero-actions"><button class="button primary" data-jump="assess">Run CMI Assess</button><button class="button ghost" data-jump="capacity">View Capacity Map</button></div>
+          </article>
+          <article class="principle-card">
+            <div class="principle-number">01</div><h3>Instrument first</h3><p>Raw events and repeatable protocols before AI.</p>
+            <div class="principle-number">02</div><h3>Measure both tasks</h3><p>Motor preservation without cognitive preservation can be reprioritisation, not improvement.</p>
+            <div class="principle-number">03</div><h3>Track the frontier</h3><p>Longitudinal change matters more than one proprietary score.</p>
+          </article>
+        </div>
+        <div class="metric-grid" id="overviewMetrics"></div>
+        <div class="two-column">
+          <article class="panel"><div class="panel-head"><div><div class="eyebrow">Current session</div><h3>Interference profile</h3></div><span class="badge" id="profileBadge">Mutual interference</span></div><div id="overviewInterference" class="bar-chart"></div></article>
+          <article class="panel"><div class="panel-head"><div><div class="eyebrow">Measurement integrity</div><h3>Timing & provenance</h3></div><span class="badge positive">Research-ready</span></div><div class="quality-list" id="qualityList"></div></article>
+        </div>
+      </section>
+
+      <section id="view-assess" class="view">
+        <div class="assessment-layout">
+          <article class="panel assessment-main">
+            <div class="panel-head"><div><div class="eyebrow">CMI Assess</div><h3 id="assessmentTitle">Protocol setup</h3></div><span class="badge neutral" id="assessmentState">Ready</span></div>
+            <div id="assessmentSetup" class="assessment-screen active-screen">
+              <div class="form-grid">
+                <label>Participant ID<input id="participantId" value="VP-CMI-001" /></label>
+                <label>Protocol<select id="protocolSelect"></select></label>
+                <label>Motor baseline target<select id="motorTargetSelect"><option value="55">55 rpm</option><option value="65" selected>65 rpm</option><option value="75">75 rpm</option></select></label>
+                <label>Priority instruction<select id="prioritySelect"><option value="equal" selected>Equal priority</option><option value="motor">Protect motor task</option><option value="cognitive">Protect cognitive task</option></select></label>
+              </div>
+              <div class="callout"><strong>Protocol control:</strong> the same cognitive generator is reused in single-task and dual-task blocks. Order, priority instructions, task difficulty and timestamps are stored with every session.</div>
+              <button class="button primary" id="startAssessmentBtn">Start standardised assessment</button>
+            </div>
+
+            <div id="assessmentRun" class="assessment-screen">
+              <div class="run-head"><div><div class="eyebrow" id="phaseEyebrow">Phase 1 of 3</div><h2 id="phaseTitle">Motor baseline</h2><p id="phaseInstruction">Maintain the target cadence as steadily as possible.</p></div><div class="timer" id="phaseTimer">00:20</div></div>
+              <div class="task-grid">
+                <div class="task-card motor-card"><div class="task-label">Motor stream</div><div class="cadence-display"><span id="cadenceValue">65</span><small>rpm</small></div><div class="target-row"><span>Target</span><strong id="cadenceTarget">65 rpm</strong></div><input type="range" id="cadenceSlider" min="30" max="100" value="65" /><div class="mini-spark" id="cadenceSpark"></div></div>
+                <div class="task-card cognitive-card"><div class="task-label">Cognitive stream</div><div id="cognitiveStimulus" class="cognitive-stimulus idle">WAIT</div><div class="cognitive-actions" id="cognitiveActions"><button class="response-key" data-response="left">←</button><button class="response-key" data-response="right">→</button></div><div class="task-meta"><span>Accuracy <strong id="accuracyValue">—</strong></span><span>RT <strong id="rtValue">—</strong></span></div></div>
+              </div>
+              <div class="run-footer"><div class="event-counter"><span id="eventCount">0</span> timestamped events</div><button class="button secondary" id="skipPhaseBtn">Complete phase now</button></div>
+            </div>
+
+            <div id="assessmentResults" class="assessment-screen">
+              <div class="result-hero"><div><div class="eyebrow">Assessment complete</div><h2>Observed CMI profile</h2><p id="resultSummary">Both motor and cognitive performance degraded under combined load.</p></div><div class="result-profile" id="resultProfile">Mutual interference</div></div>
+              <div class="metric-grid compact" id="resultMetrics"></div>
+              <div class="two-column"><div class="subpanel"><h4>Motor preservation</h4><div id="motorResultBars" class="bar-chart"></div></div><div class="subpanel"><h4>Cognitive preservation</h4><div id="cognitiveResultBars" class="bar-chart"></div></div></div>
+              <div class="button-row"><button class="button primary" data-jump="capacity">Open Capacity Map</button><button class="button secondary" id="runAgainBtn">Run another assessment</button></div>
+            </div>
+          </article>
+
+          <aside class="panel protocol-rail"><div class="eyebrow">Protocol sequence</div><div id="phaseRail" class="phase-rail"></div><hr /><div class="eyebrow">Live provenance</div><dl class="provenance-list" id="provenanceList"></dl></aside>
+        </div>
+      </section>
+
+      <section id="view-capacity" class="view">
+        <div class="capacity-grid">
+          <article class="panel map-panel"><div class="panel-head"><div><div class="eyebrow">Signature visualisation</div><h3>Cognitive-Motor Capacity Map</h3></div><div class="legend-inline"><span><i class="dot low"></i>Preserved</span><span><i class="dot mid"></i>Emerging</span><span><i class="dot high"></i>High interference</span></div></div><div class="map-wrap"><canvas id="capacityCanvas" width="980" height="560" aria-label="Cognitive motor capacity map"></canvas></div></article>
+          <aside class="panel frontier-panel"><div class="eyebrow">Observed frontier</div><h3>Where degradation begins</h3><div id="frontierStats" class="frontier-stats"></div><div class="callout small">This is a descriptive within-person map, not a diagnostic biomarker. Repeated trials and uncertainty are retained rather than collapsed into one score.</div></aside>
+        </div>
+      </section>
+
+      <section id="view-longitudinal" class="view">
+        <div class="panel"><div class="panel-head"><div><div class="eyebrow">Longitudinal measurement</div><h3>Has the interference frontier changed?</h3></div><select id="longitudinalMetric" class="compact-select"><option value="motor">Motor DTC</option><option value="cognitive">Cognitive DTC</option><option value="combined" selected>Combined interference</option></select></div><div id="longitudinalChart" class="line-chart"></div></div>
+        <div class="metric-grid" id="longitudinalMetrics"></div>
+        <div class="panel"><div class="panel-head"><div><div class="eyebrow">Session history</div><h3>Comparable protocol runs</h3></div><span class="badge neutral">Same protocol version</span></div><div class="table-wrap"><table id="sessionTable"></table></div></div>
+      </section>
+
+      <section id="view-protocols" class="view"><div class="section-intro"><div><div class="eyebrow">CMI Studio</div><h2>Protocol primitives, not a game library</h2></div><p>Each paradigm exposes parameters so the exact single-task condition can be reproduced under motor load.</p></div><div class="protocol-grid" id="protocolGrid"></div></section>
+
+      <section id="view-evidence" class="view">
+        <div class="evidence-grid">
+          <article class="panel"><div class="eyebrow">Measurement quality</div><h3>Evidence before prediction</h3><div class="evidence-ladder"><div class="evidence-step active"><span>1</span><div><strong>Instrumentation</strong><p>Event fidelity, timing, packet loss, reconstruction.</p></div></div><div class="evidence-step active"><span>2</span><div><strong>Reliability</strong><p>Test-retest agreement, SEM, repeated baseline variance.</p></div></div><div class="evidence-step"><span>3</span><div><strong>Construct validity</strong><p>Known-groups and convergent/discriminant testing.</p></div></div><div class="evidence-step"><span>4</span><div><strong>Responsiveness</strong><p>Detect meaningful within-person change.</p></div></div><div class="evidence-step"><span>5</span><div><strong>Transfer</strong><p>Determine whether change generalises beyond trained tasks.</p></div></div><div class="evidence-step"><span>6</span><div><strong>Prediction</strong><p>Only after datasets and external validation justify it.</p></div></div></div></article>
+          <article class="panel"><div class="eyebrow">Kill criteria</div><h3>Reasons to stop or redesign</h3><div id="killCriteria" class="checklist"></div></article>
+        </div>
+      </section>
+
+      <section id="view-data" class="view">
+        <div class="data-grid"><article class="panel"><div class="panel-head"><div><div class="eyebrow">Canonical event stream</div><h3>Session reconstruction</h3></div><span class="badge positive" id="eventIntegrityBadge">Complete</span></div><pre id="eventPreview" class="code-preview"></pre></article><article class="panel export-panel"><div class="eyebrow">Research export</div><h3>Keep raw data inspectable</h3><p>Export pseudonymised demo data as JSON or CSV. The prototype stores data locally in the browser only.</p><div class="button-stack"><button class="button primary" id="exportJsonBtn">Export JSON</button><button class="button secondary" id="exportCsvBtn">Export CSV</button></div><hr /><div class="mini-detail"><span>Protocol version</span><strong>1.0.0</strong></div><div class="mini-detail"><span>Clock source</span><strong>performance.now()</strong></div><div class="mini-detail"><span>Data mode</span><strong>synthetic / local</strong></div></article></div>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>
